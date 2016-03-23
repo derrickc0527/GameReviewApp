@@ -23,7 +23,7 @@ class Review(models.Model):
         (4, '4'),
         (5, '5'),
     )
-    game = models.ForeignKey(Wine)
+    game = models.ForeignKey(Game)
     pub_date = models.DateTimeField('date published')
     user_name = models.CharField(max_length=100)
     comment = models.CharField(max_length=200)
