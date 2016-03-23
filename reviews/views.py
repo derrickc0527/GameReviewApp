@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .models import Review, Game
 from .forms import ReviewForm
 import datetime
+from django.contrib.auth.decorators import login_required
+
 
 def review_list(request):
     latest_review_list = Review.objects.order_by('-pub_date')[:9]
