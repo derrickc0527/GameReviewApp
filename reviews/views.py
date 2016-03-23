@@ -31,6 +31,7 @@ def game_detail(request, wine_id):
     form = ReviewForm()
     return render(request, 'game_detail.html', {'game': game, 'form': form})
 
+@login_required
 def add_review(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
     form = ReviewForm(request.POST)
