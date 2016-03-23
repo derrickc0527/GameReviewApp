@@ -12,26 +12,26 @@ import datetime
 def review_list(request):
     latest_review_list = Review.objects.order_by('-pub_date')[:9]
     context = {'latest_review_list':latest_review_list}
-    return render(request, 'reviews/review_list.html', context)
+    return render(request, 'review_list.html', context)
 
 
 def review_detail(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-    return render(request, 'reviews/review_detail.html', {'review': review})
+    return render(request, 'review_detail.html', {'review': review})
 
 
 def game_list(request):
     game_list = Game.objects.order_by('-name')
     context = {'game_list':game_list}
-    return render(request, 'reviews/game_list.html', context)
+    return render(request, 'game_list.html', context)
 
 
 def game_detail(request, wine_id):
     game = get_object_or_404(Game, pk=game_id)
     form = ReviewForm()
-    return render(request, 'reviews/game_detail.html', {'game': game, 'form': form})
+    return render(request, 'game_detail.html', {'game': game, 'form': form})
 
-def add_review(request, wine_id):
+def add_review(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
     form = ReviewForm(request.POST)
     if form.is_valid():
@@ -50,4 +50,4 @@ def add_review(request, wine_id):
         user hits the Back button."""
         return HttpResponseRedirect(reverse('reviews:game_detail', args=(game.id,)))
 
-    return render(request, 'reviews/game_detail.html', {'game': game, 'form': form})
+    return render(request, 'game_detail.html', {'game': game, 'form': form})
