@@ -1,0 +1,7 @@
+dj-database-url==0.4.0
+Django==1.9.4
+django-bootstrap3==7.0.0
+django-registration==2.0.4
+gunicorn==19.4.5
+numpy==1.10.4
+scipy==0.17.0
