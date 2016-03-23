@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'reviews',
+    'registration',
 ]
+
+LOGIN_REDIRECT_URL = '/reviews/review/user'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

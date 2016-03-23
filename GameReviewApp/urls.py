@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^reviews/', include('reviews.urls', namespace="reviews")),
     url(r'^$',RedirectView.as_view(url='/reviews/'), name='home'),
-    url('^accounts/', include('django.contrib.auth.urls'))
+    url('^accounts/', include('django.contrib.auth.urls', namespace="auth")),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 
 ]

@@ -7,6 +7,9 @@ urlpatterns = [
     url(r'^game$', views.game_list, name='game_list'),
     url(r'^game/(?P<wine_id>[0-9]+)/$', views.game_detail, name='game_detail'),
     url(r'^game/(?P<wine_id>[0-9]+)/add_review/$', views.add_review, name='add_review'),
+    url(r'^review/user/(?P<username>\w+)/$', views.user_review_list, name='user_review_list'),
+    url(r'^review/user/$', views.user_review_list, name='user_review_list'),
+
 
 
 ]
