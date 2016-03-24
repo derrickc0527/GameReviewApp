@@ -28,7 +28,7 @@ def game_list(request):
     return render(request, 'game_list.html', context)
 
 
-def game_detail(request, wine_id):
+def game_detail(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
     form = ReviewForm()
     return render(request, 'game_detail.html', {'game': game, 'form': form})
