@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^reviews/', include('reviews.urls', namespace="reviews")),
     url(r'^$',RedirectView.as_view(url='/reviews/'), name='home'),
-    url('^accounts/', include('django.contrib.auth.urls', namespace="auth")),
     url(r'^accounts/', include('registration.backends.simple.urls')),
+    url('^accounts/', include('django.contrib.auth.urls', namespace="auth")),
+    #url(r'^logout/$', 'django.contrib.auth.views.logout',name='logout',kwargs={'template_name': 'registration/logout.html'}),
+    url(r'^admin/', admin.site.urls),
 
 ]
