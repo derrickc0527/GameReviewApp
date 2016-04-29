@@ -57,7 +57,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'GameReviewApp.urls'
-LOGIN_REDIRECT_URL = '/reviews/review/user'
+LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {

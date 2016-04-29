@@ -64,7 +64,7 @@ def signup(request):
             password = user_form
             user_form.save()
             user = authenticate(username=username, password=password)
-            login(request, user)
+            #login(request, user)
             return redirect('/')
         else:
             return index(request, user_form=user_form)
