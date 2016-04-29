@@ -2,7 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.html import strip_tags
-from ribbit_app.models import Ribbit, Review
+from reviews.models import Ribbit, Review
 from django.forms import ModelForm, Textarea
 
 class ReviewForm(ModelForm):

@@ -1,37 +1,51 @@
-{% load bootstrap3 %}
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static from staticfiles %}
+  <link rel="stylesheet/less" href="{% static "style.less" %}">
+  <script src="{% static "less.js" %}"></script>
 
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{% block bootstrap3_content %}
-<div class="container">
-    <nav class="navbar navbar-default">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'reviews:review_list' %}">GameHub</a>
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <img src="{% static "gfx/logo.png" %}">
+            <span>WELCOME</span>
+            {% block login %}
+            <a href="/">Home</a>
+            <a href="/users/">  Public Profiles</a>
+            <a href="/users/{{ username }}">  My Profile</a>
+            <a href="/game">  Game List</a>
+            <a href="/search">  Search</a>
+          </body>
+            <form action="/logout">
+                <input type="submit" id="btnLogOut" value="Log Out">
+            </form>
+            {% endblock %}
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'reviews:game_list' %}">Game list</a></li>
-                <li><a href="{% url 'reviews:review_list' %}">Home</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'reviews:user_review_list' user.username %}">Hello {{ user.username }}</a></li>
-                <li><a href="{% url 'auth:logout' %}">Logout</a></li>
-                {% else %}
-                <li><a href="{% url 'auth:login' %}">Login</a></li>
-                <li><a href="/accounts/register">Register</a></li>
-                {% endif %}
-            </ul>
+    </header>
+    <div id="content">
+        <div class="wrapper">
+            {% block flash %}
+            {% if auth_form.non_field_errors or user_form.non_field_errors or ribbit_form.errors %}
+            <div class="flash error">
+                {{ auth_form.non_field_errors }}
+                {{ user_form.non_field_errors }}
+                {{ ribbit_form.content.errors }}
+            </div>
+            {% endif %}
+            {% if notice %}
+            <div class="flash notice">
+                {{ notice }}
+            </div>
+            {% endif %}
+            {% endblock %}
+            {% block title %}
+            {% endblock %}
+            {% block content %}
+
+            {% endblock %}
         </div>
-    </nav>
-
-
-    <h1>{% block title %}(no title){% endblock %}</h1>
-
-    {% bootstrap_messages %}
-
-    {% block content %}(no content){% endblock %}
-</div>
-
-{% endblock %}
+    </div>
+</body>
+</html>

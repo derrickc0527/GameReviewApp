@@ -5,8 +5,8 @@ from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
-from ribbit_app.forms import AuthenticateForm, UserCreateForm, RibbitForm
-from ribbit_app.models import Ribbit, Review, Game
+from reviews.forms import AuthenticateForm, UserCreateForm, RibbitForm
+from reviews.models import Ribbit, Review, Game
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse

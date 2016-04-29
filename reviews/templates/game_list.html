@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Game list</h2>
+<h2>Search</h2>
+<form method='GET' action=''>
+  <input type='text' name='keyword' placeholder="Search threads" value='{{request.get.keyword}}'/>
+  <input type='submit' value='Search'>
+  <hr>
 {% endblock %}
 
 {% block content %}
@@ -9,7 +13,7 @@
 <div class="row">
     {% for game in game_list %}
     <div class="col-xs-6 col-lg-4">
-        <h4><a href="{% url 'reviews:game_detail' game.id %}">
+        <h4><a href="{% url 'game_detail' game.id %}">
         {{ game.name }}
         </a></h4>
         <h5>{{ game.review_set.count }} reviews</h5>
