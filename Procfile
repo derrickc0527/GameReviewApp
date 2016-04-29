@@ -1,1 +1,1 @@
-web: gunicorn GameReviewApp.wsgi
+web: python manage.py collectstatic --noinput; gunicorn hellodjango.wsgi
