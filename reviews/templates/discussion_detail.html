@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2>Discussion for {{ discussion.game }} by {{ discussion.user }}</h2>
+{% endblock %}
+
+{% block content %}
+{% if discussion.user == request.user %}
+    {% if discussion.closed %}
+        <p>
+            This discussion is closed
+        </p>
+    {% else %}
+        <a href="{% url 'discussion_detail' discussion.id %}?close=1">Close this discussion</a>
+    {% endif %}
+{% endif %}
+<h3>Recent Comment</h3>
+
+{% if comments %}
+    {% for comment in comments %}
+        <em>{{ comment.comment }}</em> by <a href="{% url 'user' comment.user %}" >{{ comment.user }}</a>
+    {% endfor %}
+{% else %}
+<p>No comment for this discussion yet</p>
+{% endif %}
+
+{% if discussion.closed %}
+<p>
+    This discussion is closed
+</p>
+{% else %}
+<h3>Add your review</h3>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'add_comment' discussion.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit"  />
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>Discussions for {{ game.name }}</h1>
+{% endblock %}
+
+
+{% block content %}
+{% if discussions %}
+<ul>
+    {% for discussion in discussions %}
+        <li>
+            <a href="{% url 'discussion_detail' discussion.id %}">{{ discussion.user }} invited you to a discussion</a>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>
+        You're invited to no discussions in this game
+    </p>
+{% endif %}
+{% endblock %}

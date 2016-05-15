@@ -260,3 +260,20 @@ def discussion_detail(request, discussion_id):
     comments = DiscussionComment.objects.filter(discussion=discussion)
     form = DiscussionCommentForm()
     return render(request, 'discussion_detail.html', {'discussion': discussion, 'comments': comments, 'form': form})
+
+def add_comment(request, discussion_id):
+    discussion = get_object_or_404(Discussion, pk=discussion_id)
+    form = DiscussionCommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.discussion = discussion
+        comment.user = request.user
+        comment.save()
+        return HttpResponseRedirect(reverse('discussion_detail', args=(discussion.id,)))
+
+    return render(request, 'discussion_detail.html', {'discussion': discussion, 'form': form})
+
+
+def user_discussions_list(request):
+    discussions = Discussion.objects.filter(user=request.user)
+    return render(request, 'user_discussions_list.html', {'discussions': discussions})
