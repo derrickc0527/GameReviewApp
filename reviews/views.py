@@ -24,7 +24,7 @@ def index(request, auth_form=None, user_form=None):
 
         return render(request,
                       'buddies.html',
-                      {'message_form': ribbit_form, 'user': user,
+                      {'message_form': message_form, 'user': user,
                        'messages': messages,
                        'next_url': '/', })
     else:
@@ -117,7 +117,7 @@ def users(request, username="", message_form=None):
         return render(request, 'user.html', {'user': user, 'messages': messages, 'follow': True, })
     users = User.objects.all().annotate(message_count=Count('message'))
     messages = map(get_latest, users)
-    obj = zip(users, ribbits)
+    obj = zip(users, messages)
     message_form = message_form or MessageForm()
     return render(request,
                   'profiles.html',
