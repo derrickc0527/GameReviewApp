@@ -209,3 +209,25 @@ def recommendation(request, game_id):
                                                             recommended_by = request.user)
         return render(request, 'recommend_success.html', {'game': game, 'user': recommended_to})
     return render(request, 'recommend.html', {'game': game, 'networks': networks})
+
+
+"""
+Open a discussion to selected follower list. The follower invited will see the discussion in game discussion list
+"""
+def open_discussion(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    user = request.user
+    networks = user.profile.followed_by.all()
+    if 'question' in request.GET and 'invited' in request.GET:
+        discussion = Discussion(game=game)
+        discussion.user = request.user
+        discussion.question = request.GET['question']
+        discussion.save()
+        # get the invited list
+        invited = request.GET.getlist('invited')
+        # iterate through the invited list and add the user's to discussion's invited_user
+        for i in invited:
+            u = get_object_or_404(User, username=i)
+            discussion.invited_user.add(u)
+        return HttpResponse('discussion created successfully')
+    return render(request, 'opendiscussion.html', {'networks': networks, 'game': game})
