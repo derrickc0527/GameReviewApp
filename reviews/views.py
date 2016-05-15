@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from reviews.forms import AuthenticateForm, UserCreateForm, MessageForm, ReviewForm
-from reviews.models import Message, Review, Game
+from reviews.models import Message, Review, Game, Recommendation, Discussion, DiscussionComment
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -191,3 +191,21 @@ def user_review_list(request, username=None):
     latest_review_list = Review.objects.filter(user_name=username).order_by('-pub_date')
     context = {'latest_review_list':latest_review_list, 'username':username}
     return render(request, 'user_review_list.html', context)
+
+
+"""
+This method allow user to recommend a game to the followers. THe requirement is
+the user1 MUST follow user2 and the user2 MUST follow the user1 to sent the recommendation
+"""
+def recommendation(request, game_id):
+    user = request.user
+    game = get_object_or_404(Game, pk=game_id)
+    #get the list of the followers
+    network = user.profile.followed_by.all
+    if 'user' in request.GET:
+        recommended_to = get_object_or_404(User, username = request.GET.get('user'))
+        recommend = Recommendation.objects.update_or_create(game = game,
+                                                            recommended_to = recommended_to,
+                                                            recommended_by = request.user)
+        return render(request, 'recommend_success.html', {'game': game, 'user': recommended_to})
+    return render(request, 'recommend.html', {'game': game, 'networks': networks})
