@@ -2,7 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.html import strip_tags
-from reviews.models import Ribbit, Review
+from reviews.models import Message, Review, DiscussionComment
 from django.forms import ModelForm, Textarea
 
 class ReviewForm(ModelForm):
@@ -68,3 +68,9 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         exclude = ('user',)
+
+
+class DiscussionCommentForm(forms.ModelForm):
+    class Meta:
+        model = DiscussionComment
+        fields = ['comment']

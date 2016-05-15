@@ -48,11 +48,11 @@ class Recommendation(models.Model):
     recommended_by = models.ForeignKey(User, related_name = "recommended_by")
     recommended_to = models.ForeignKey(User, related_name= "recommended_to")
 
-class Dicussion(models.Model):
+class Discussion(models.Model):
     game = models.ForeignKey(Game)
     user = models.ForeignKey(User)
-    creation_date = models.DateField(auto_now_add = True)
-    invited_user = models.ManyToManyField(User, related_name = 'invited')
+    creation_date = models.DateField(auto_now_add=True)
+    invited_user = models.ManyToManyField(User, related_name='invited')
     closed = models.BooleanField(default=False)
     question = models.CharField(max_length=500)
 
