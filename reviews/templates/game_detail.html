@@ -4,21 +4,58 @@
 {% block title %}
 <h2>{{ game.name }}</h2>
 <h5>{{ game.review_set.count }} reviews ({{ game.average_rating | floatformat }} average rating)</h5>
+<a href="{% url 'recommend' game.id %}">Recommend to user</a> |
+<a href="{% url 'opendiscussion' game.id %}">Open a Discussion</a> |
+<a href="{% url 'discussions' game.id %}">Discussions of this game</a>
 {% endblock %}
 
 {% block content %}
+{% if recommends %}
+<h3>This game is recommended by</h3>
+<ul>
+        {% for recommend in recommends %}
+        {% if request.user == recommend.recommended_to %}
+        <li>
+            {{ recommend.recommended_by }}
+        </li>
+        {% endif %}
+        {% endfor %}
+</ul>
+{% endif %}
 <h3>Recent reviews</h3>
 
 {% if game.review_set.all %}
 <div class="row">
     {% for review in game.review_set.all %}
+    {% if review.is_public %}
+        <div class="col-xs-6 col-lg-4">
+            <em>{{ review.comment }}</em>
+            <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
+            <h5><a href="{% url 'review_detail' review.id %}">
+                Read more
+            </a></h5>
+        </div>
+    {% elif request.user == review.user_name %}
+        <div class="col-xs-6 col-lg-4">
+            <em>{{ review.comment }}</em>
+            <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
+            <h5><a href="{% url 'review_detail' review.id %}">
+                Read more
+            </a></h5>
+        </div>
+    {% elif request.user.profile in review.user_name.profile.followed_by.all %}
     <div class="col-xs-6 col-lg-4">
         <em>{{ review.comment }}</em>
         <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
         <h5><a href="{% url 'review_detail' review.id %}">
-        Read more
+            Read more
         </a></h5>
     </div>
+    {% else %}
+        <p>
+            Sry this comment is restricted to user network
+        </p>
+    {% endif %}
     {% endfor %}
 </div>
 {% else %}
@@ -29,7 +66,7 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'add_review' game.id %}" method="post" class="form">
-    {% csrf_token %}ss
+    {% csrf_token %}
     {% bootstrap_form form layout='inline' %}
     {% buttons %}
     <button type="submit" class="btn btn-primary">

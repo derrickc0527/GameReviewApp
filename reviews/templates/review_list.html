@@ -8,13 +8,35 @@
 {% if latest_review_list %}
 <div class="row">
     {% for review in latest_review_list %}
+    {% if review.is_public %}
+        <div class="col-xs-6 col-lg-4">
+            <em>{{ review.comment }}</em>
+            <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
+            <h5><a href="{% url 'review_detail' review.id %}">
+                Read more
+            </a></h5>
+        </div>
+    {% elif request.user == review.user_name %}
+        <div class="col-xs-6 col-lg-4">
+            <em>{{ review.comment }}</em>
+            <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
+            <h5><a href="{% url 'review_detail' review.id %}">
+                Read more
+            </a></h5>
+        </div>
+    {% elif request.user.profile in review.user_name.profile.followed_by.all %}
     <div class="col-xs-6 col-lg-4">
-        <h4><a href="{% url 'review_detail' review.id %}">
-        {{ review.game.name }}
-        </a></h4>
+        <em>{{ review.comment }}</em>
         <h6>Rated {{ review.rating }} of 5 by <a href="{% url 'user_review_list' review.user_name %}" >{{ review.user_name }}</a></h6>
-        <p>{{ review.comment }}</p>
+        <h5><a href="{% url 'review_detail' review.id %}">
+            Read more
+        </a></h5>
     </div>
+    {% else %}
+        <p>
+            Sry this comment is restricted to user network
+        </p>
+    {% endif %}
     {% endfor %}
 </div>
 {% else %}
