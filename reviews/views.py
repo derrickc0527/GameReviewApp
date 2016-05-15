@@ -231,3 +231,32 @@ def open_discussion(request, game_id):
             discussion.invited_user.add(u)
         return HttpResponse('discussion created successfully')
     return render(request, 'opendiscussion.html', {'networks': networks, 'game': game})
+
+"""
+If a user is invited in a games discussions he will see the list
+"""
+def discussions(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    u = request.user
+    discussions = u.invited.filter(game=game)
+    return render(request, 'discussions_list.html', {'game': game, 'discussions': discussions})
+
+"""
+The invited user can comment on the game discussion if the discussion is not closed
+if the logged in user is creator of discussion he will see a link to close the discussion.
+and the invited user will not see the comment box
+"""
+def discussion_detail(request, discussion_id):
+    discussion = get_object_or_404(Discussion, pk=discussion_id)
+    if 'close' in request.GET:
+        close = request.GET['close']
+        if close == str(1):
+            discussion.closed = True
+            discussion.save()
+    day = date.today() - timedelta(7)
+    if day == discussion.creation_date:
+        discussion.closed = True
+        discussion.save()
+    comments = DiscussionComment.objects.filter(discussion=discussion)
+    form = DiscussionCommentForm()
+    return render(request, 'discussion_detail.html', {'discussion': discussion, 'comments': comments, 'form': form})
