@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+    <h1>Recommend {{ game.name }} to</h1>
+{% endblock %}
+{% block content %}
+<ul>
+    {% for network in networks  %}
+        <li>
+            <a href="{% url 'recommend' game.id %}?user={{ network.user.username }}">
+                {{ network.user.username }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

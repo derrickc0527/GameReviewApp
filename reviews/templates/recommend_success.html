@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>{{ game.name }} is successfully recommended to</h1>
+    <p>
+        {{ user.username }}
+    </p>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'game_detail' game.id %}">Back to Game details</a> |
+    <a href="{% url 'recommend' game.id%}">Back to Game Recommend page</a>
+{% endblock %}
