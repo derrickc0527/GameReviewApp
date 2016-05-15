@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1>Discussions opened by me</h1>
+{% endblock %}
+
+
+{% block content %}
+{% if discussions %}
+<ul>
+    {% for discussion in discussions %}
+        <li>
+            <a href="{% url 'discussion_detail' discussion.id %}">Discussion for game {{ discussion.game }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>
+        You've not created a discussion
+    </p>
+{% endif %}
+{% endblock %}
