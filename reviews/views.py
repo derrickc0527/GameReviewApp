@@ -5,28 +5,27 @@ from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
-from reviews.forms import AuthenticateForm, UserCreateForm, RibbitForm
-from reviews.models import Ribbit, Review, Game
+from reviews.forms import AuthenticateForm, UserCreateForm, MessageForm, ReviewForm
+from reviews.models import Message, Review, Game
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .forms import ReviewForm
 import datetime
 
 
 def index(request, auth_form=None, user_form=None):
     # User is logged in
     if request.user.is_authenticated():
-        ribbit_form = RibbitForm()
+        message_form = MessageForm()
         user = request.user
-        ribbits_self = Ribbit.objects.filter(user=user.id)
-        ribbits_buddies = Ribbit.objects.filter(user__userprofile__in=user.profile.follows.all)
-        ribbits = ribbits_self | ribbits_buddies
+        messages_self = Message.objects.filter(user=user.id)
+        messages_buddies = Message.objects.filter(user__userprofile__in=user.profile.follows.all)
+        messages = messages_self | messages_buddies
 
         return render(request,
                       'buddies.html',
-                      {'ribbit_form': ribbit_form, 'user': user,
-                       'ribbits': ribbits,
+                      {'message_form': ribbit_form, 'user': user,
+                       'messages': messages,
                        'next_url': '/', })
     else:
         # User is not logged in
@@ -72,58 +71,58 @@ def signup(request):
 
 
 @login_required
-def public(request, ribbit_form=None):
-    ribbit_form = ribbit_form or RibbitForm()
-    ribbits = Ribbit.objects.reverse()[:10]
+def public(request, message_form=None):
+    message_form = message_form or MessageForm()
+    messages = Message.objects.reverse()[:10]
     return render(request,
                   'public.html',
-                  {'ribbit_form': ribbit_form, 'next_url': '/ribbits',
-                   'ribbits': ribbits, 'username': request.user.username})
+                  {'message_form': message_form, 'next_url': '/messages',
+                   'messages': messages, 'username': request.user.username})
 
 
 @login_required
 def submit(request):
     if request.method == "POST":
-        ribbit_form = RibbitForm(data=request.POST)
+        message_form = MessageForm(data=request.POST)
         next_url = request.POST.get("next_url", "/")
-        if ribbit_form.is_valid():
-            ribbit = ribbit_form.save(commit=False)
-            ribbit.user = request.user
-            ribbit.save()
+        if message_form.is_valid():
+            message = message_form.save(commit=False)
+            message.user = request.user
+            message.save()
             return redirect(next_url)
         else:
-            return public(request, ribbit_form)
+            return public(request, message_form)
     return redirect('/')
 
 
 def get_latest(user):
     try:
-        return user.ribbit_set.order_by('id').reverse()[0]
+        return user.message_set.order_by('id').reverse()[0]
     except IndexError:
         return ""
 
 
 @login_required
-def users(request, username="", ribbit_form=None):
+def users(request, username="", message_form=None):
     if username:
         # Show a profile
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
-        ribbits = Ribbit.objects.filter(user=user.id)
+        messages = Message.objects.filter(user=user.id)
         if username == request.user.username or request.user.profile.follows.filter(user__username=username):
             # Self Profile
-            return render(request, 'user.html', {'user': user, 'ribbits': ribbits, })
-        return render(request, 'user.html', {'user': user, 'ribbits': ribbits, 'follow': True, })
-    users = User.objects.all().annotate(ribbit_count=Count('ribbit'))
-    ribbits = map(get_latest, users)
+            return render(request, 'user.html', {'user': user, 'messages': messages, })
+        return render(request, 'user.html', {'user': user, 'messages': messages, 'follow': True, })
+    users = User.objects.all().annotate(message_count=Count('message'))
+    messages = map(get_latest, users)
     obj = zip(users, ribbits)
-    ribbit_form = ribbit_form or RibbitForm()
+    message_form = message_form or MessageForm()
     return render(request,
                   'profiles.html',
                   {'obj': obj, 'next_url': '/users/',
-                   'ribbit_form': ribbit_form,
+                   'message_form': message_form,
                    'username': request.user.username, })
 
 @login_required
