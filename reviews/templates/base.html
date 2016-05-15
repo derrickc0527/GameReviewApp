@@ -4,6 +4,7 @@
   {% load static from staticfiles %}
   <link rel="stylesheet/less" href="{% static "style.less" %}">
   <script src="{% static "less.js" %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 </head>
 <body>
@@ -19,7 +20,7 @@
             <a href="/search">  Search</a>
           </body>
             <form action="/logout">
-                <input type="submit" id="btnLogOut" value="Log Out">
+                <input type="submit" class="btn btn-primary" value="Log Out">
             </form>
             {% endblock %}
         </div>

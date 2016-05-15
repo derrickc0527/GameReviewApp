@@ -5,7 +5,7 @@
         {% for field in auth_form %}
         {{ field }}
         {% endfor %}
-        <input type="submit" id="btnLogIn" value="Log In">
+        <input type="submit" class="btn btn-primary" value="Log In">
     </form>
 {% endblock %}
 
@@ -20,7 +20,7 @@
             {% for field in user_form %}
             {{ field }}
             {% endfor %}
-            <input type="submit" value="Create Account">
+            <input type="submit" class="btn btn-info" value="Create Account">
         </form>
     </p>
 </div>
