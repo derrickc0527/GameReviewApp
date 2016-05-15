@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Review
+from .models import Game, Review, Recommendation, Discussion
 # Register your models here.
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -11,3 +11,5 @@ class ReviewAdmin(admin.ModelAdmin):
 
 admin.site.register(Game)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Recommendation)
+admin.site.register(Discussion)

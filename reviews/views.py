@@ -201,7 +201,7 @@ def recommendation(request, game_id):
     user = request.user
     game = get_object_or_404(Game, pk=game_id)
     #get the list of the followers
-    network = user.profile.followed_by.all
+    networks = user.profile.followed_by.all
     if 'user' in request.GET:
         recommended_to = get_object_or_404(User, username = request.GET.get('user'))
         recommend = Recommendation.objects.update_or_create(game = game,
