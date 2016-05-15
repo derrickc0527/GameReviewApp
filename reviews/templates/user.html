@@ -7,15 +7,15 @@
 
 {% block content %}
     <div class="panel left">
-        <h1>{{ user.first_name }}'s Profile</h1>
+        <h1>{{ user.username }}'s Profile</h1>
         <div class="ribbitWrapper">
             <a href="/users/{{ user.username }}">
                 <img class="avatar" src="{{ user.profile.gravatar_url }}">
-                <span class="name">{{ user.first_name }}</span>
+                <span class="name">{{ user.username }}</span>
             </a>
                 @{{ user.username }}
             <p>
-                {{ ribbits.count }} Ribbits
+                {{ messages.count }} Status
                 <span class="spacing">{{ user.profile.follows.all.count }} Following</span>
                 <span class="spacing">{{ user.profile.followed_by.all.count }} Followers</span>
             </p>
@@ -30,17 +30,20 @@
     </div>
 
     <div class="panel left">
-        <h1>{{ user.first_name }}'s Ribbits</h1>
-        {% for ribbit in ribbits %}
+        <h1>{{ user.username }}'s Status</h1>
+        {% for message in messages %}
         <div class="ribbitWrapper">
             <a href="/users/{{ user.username }}">
                 <img class="avatar" src="{{ user.profile.gravatar_url }}">
-                <span class="name">{{ ribbit.user.first_name }}</span>
+                <span class="name">{{ message.user.first_name }}</span>
             </a>
-            @{{ ribbit.user.username }}
-            <span class="time">{{ ribbit.creation_date|timesince }}</span>
-            <p>{{ ribbit.content }}</p>
+            @{{ message.user.username }}
+            <span class="time">{{ message.creation_date|timesince }}</span>
+            <p>{{ message.content }}</p>
         </div>
         {% endfor %}
     </div>
+    <p>
+        <a href="{% url 'user_discussions_list' %}">My discussions</a>
+    </p>
 {% endblock %}

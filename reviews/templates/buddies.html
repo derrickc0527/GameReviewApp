@@ -10,7 +10,7 @@
         <h1>Update My Status</h1>
         <p>
             <form action="/submit" method="post">
-            {% for field in ribbit_form %}{% csrf_token %}
+            {% for field in message_form %}{% csrf_token %}
             {{ field }}
             {% endfor %}
             <input type="hidden" value="{{ next_url }}" name="next_url">
@@ -19,16 +19,16 @@
         </p>
     </div>
     <div class="panel left">
-        <h1>Buddies' Ribbits</h1>
-        {% for ribbit in ribbits %}
+        <h1>Buddies' Status</h1>
+        {% for message in messages %}
         <div class="ribbitWrapper">
-            <a href="/users/{{ ribbit.user.username }}">
-                <img class="avatar" src="{{ ribbit.user.profile.gravatar_url }}">
-                <span class="name">{{ ribbit.user.first_name }}</span>
+            <a href="/users/{{ message.user.username }}">
+                <img class="avatar" src="{{ message.user.profile.gravatar_url }}">
+                <span class="name">{{ message.user.first_name }}</span>
             </a>
-            @{{ ribbit.user.username }}
+            @{{ message.user.username }}
             <p>
-                {{ ribbit.content }}
+                {{ message.content }}
             </p>
         </div>
         {% endfor %}
