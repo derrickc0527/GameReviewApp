@@ -29,7 +29,7 @@ class Review(models.Model):
     rating = models.IntegerField(choices=RATING_CHOICES)
 
 
-class Ribbit(models.Model):
+class Message(models.Model):
     content = models.CharField(max_length=140)
     user = models.ForeignKey(User)
     creation_date = models.DateTimeField(auto_now=True, blank=True)
@@ -42,3 +42,21 @@ class UserProfile(models.Model):
         return "http://www.gravatar.com/avatar/%s?s=50" % hashlib.md5(self.user.email).hexdigest()
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
+class Recommendation(models.Model):
+    game = models.ForeignKey(Game)
+    recommended_by = models.ForeignKey(User, related_name = "recommended_by")
+    recommended_to = models.ForeignKey(User, related_name= "recommended_to")
+
+class Dicussion(models.Model):
+    game = models.ForeignKey(Game)
+    user = models.ForeignKey(User)
+    creation_date = models.DateField(auto_now_add = True)
+    invited_user = models.ManyToManyField(User, related_name = 'invited')
+    closed = models.BooleanField(default=False)
+    question = models.CharField(max_length=500)
+
+class DiscussionComment(models.Model):
+    discussion = models.ForeignKey(Discussion)
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=500)

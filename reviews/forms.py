@@ -55,16 +55,16 @@ class AuthenticateForm(AuthenticationForm):
         return form
 
 
-class RibbitForm(forms.ModelForm):
+class MessageForm(forms.ModelForm):
     content = forms.CharField(required=True, widget=forms.widgets.Textarea(attrs={'class': 'ribbitText'}))
 
     def is_valid(self):
-        form = super(RibbitForm, self).is_valid()
+        form = super(MessageForm, self).is_valid()
         for f in self.errors.iterkeys():
             if f != '__all__':
-                self.fields[f].widget.attrs.update({'class': 'error ribbitText'})
+                self.fields[f].widget.attrs.update({'class': 'error in the message field!'})
         return form
 
     class Meta:
-        model = Ribbit
+        model = Message
         exclude = ('user',)
